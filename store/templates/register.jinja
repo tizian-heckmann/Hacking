@@ -1,0 +1,26 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>Register</title>
+{% endblock %}
+
+{% block content %}
+    <body class="text-center">
+        <div class="container">
+            <form method="POST" class="form-register" action="/register">
+                <br />
+                <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
+
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-control" />
+                <label for="emailAddress" class="form-label">Email address</label>
+                <input type="text" id="emailAddress" name="emailAddress" class="form-control" />
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" />
+
+                <br />
+                <button type="submit" class="btn btn-dark">Register</button>
+            </form>
+        </div>
+    </body>
+{% endblock %}

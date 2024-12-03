@@ -1,0 +1,21 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>Add Game</title>
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <form class="form-control" action="{{ url_for('add_game_page') }}" method="post" enctype="multipart/form-data">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" /><br />
+            <label for="description">Description</label>
+            <input id="description" name="description" type="text" /><br />
+            <label for="price">Price</label>
+            <input id="price" name="price" type="number" /><br />
+            <label for="thumbnail">Thumbnail</label>
+            <input id="thumbnail" name="thumbnail" type="file" /><br />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+{% endblock %}

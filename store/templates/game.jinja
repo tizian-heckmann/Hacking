@@ -1,0 +1,33 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>{{ name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}"></link>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <table class="mx-auto text-center mt-5">
+            <tr>
+                <td rowspan="2">
+                    <img class="game-thumbnail" src="{{ thumbnail_path }}" />
+                </td>
+                <td class="align-top">
+                    <p>{{ description }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="align-top">
+                    {% if not owned %}
+                        <p>{{ price }}€</p>
+                        <button onclick="buyGame(this)" data-user-id="{{ user_id }}"
+                            data-game-id="{{ game_id }}">Buy</button>
+                    {% else %}
+                        <p>You already own this.</p>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </main>
+{% endblock %}

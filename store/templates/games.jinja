@@ -1,0 +1,28 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>Games</title>
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+                <tr>
+                    <th scope="row">{{ game["id"] }}</th>
+                    <td>{{ game["name"] }}</td>
+                    <td>{{ game["price"] }}</td>
+                    <td>{{ game["description"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}"></link>
+{% endblock %}
+
+{% block content %}
+        {#
+        <aside>
+            <ul class="list-unstyled">
+                {% for tag in tags %}
+                    <li>
+                        <label for="{{ tag }}">{{ tag }}</label>
+                        <input type="checkbox" name="{{ tag }}" id="{{ tag }}"></input>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+        #}
+
+        <main class="d-flex justify-content-center align-items-center">
+            <div class="container w-75">
+                <h1 class="text-center">Trending</h1>
+                <table id="trending-games" class="mx-auto">
+                    {% for trending_game in trending_games %}
+                        {% if loop.first %}
+                            <tr>
+                        {% elif loop.index0 is divisibleby(3) %}
+                            </tr><tr> <!-- Close current row and start a new one every 3 items -->
+                        {% endif %}
+                        <td>
+                            <div class="game-card">
+                                <a href="/game/{{ trending_game['name'] }}">
+                                    <img class="game-thumbnail" src="{{ trending_game['thumbnail_path'] }}" alt="{{ trending_game['name'] }}" />
+                                </a>
+                                <div class="game-info">
+                                    <span class="game-title">{{ trending_game['name'] }}</span>
+                                    <span class="game-price">{{ trending_game['price'] }}€</span>
+                                </div>
+                            </div>
+                        </td>
+                        {% if loop.last %}
+                            </tr> <!-- Close the final row if it's the last item -->
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </main>
+{% endblock %}

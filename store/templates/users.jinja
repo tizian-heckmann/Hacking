@@ -1,0 +1,28 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>Users</title>
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{user["id"]}}</th>
+                    <td>{{user["name"]}}</td>
+                    <td>{{user["email_address"]}}</td>
+                    <td>{{user["password"]}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

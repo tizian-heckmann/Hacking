@@ -1,0 +1,24 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>Login</title>
+{% endblock %}
+
+{% block content %}
+    <body class="text-center">
+        <div class="container">
+            <form name="login" method="POST" class="form-register" action="/login">
+                <br />
+                <h1 class="h3 mb-3 font-weight-normal">Please login</h1>
+
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-control" />
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" />
+
+                <br />
+                <button type="submit" class="btn btn-dark">Login</button>
+            </form>
+        </div>
+    </body>
+{% endblock %}

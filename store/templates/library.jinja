@@ -1,0 +1,28 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+    <title>{{ name }}</title>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>Game</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game_owned in games_owned %}
+                    <tr>
+                        <td>{{ game_owned["name"] }}</td>
+                        <td>{{ game_owned["description"] }}</td>
+                        <td>{{ game_owned["price"] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}

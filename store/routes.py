@@ -21,7 +21,7 @@ def home_page():
 
 @app.route("/users")
 def users_page():
-    query: str = f"SELECT * FROM users"
+    query: str = "SELECT * FROM users"
     result_set: Any = db.session.execute(text(query))
     users = result_set.mappings().all()
     return render_template("users.jinja", users=users)
@@ -33,7 +33,7 @@ def games_page():
     print("<>games_page", cookie)
     if not cookie:
         return redirect(url_for("login_page"))
-    query: str = f"SELECT * FROM games"
+    query: str = "SELECT * FROM games"
     result_set: Any = db.session.execute(text(query))
     games = result_set.mappings().all()
     return render_template("games.jinja", games=games, cookie=cookie)

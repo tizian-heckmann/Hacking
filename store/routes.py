@@ -58,8 +58,6 @@ def add_game_page():
     if not cookie:
         return redirect(url_for("login_page"))
 
-    username = cookie
-
     if request.method == "GET":
         return render_template("add_game.jinja", cookie=cookie)
     elif request.method == "POST":
@@ -128,9 +126,8 @@ def login_page():
             return render_template('login.jinja', cookie=None)
 
 
-        query_stmt = f"select name from users where name='{username}' and password='{password}'"
-        print(query_stmt)
-        result = db.session.execute(text(query_stmt))
+        query_stmt = "select name from users where name=:username and password=:password"
+        result = db.session.execute(text(query_stmt), params={"username": username, "password": password})
         user = result.fetchone()
         print(user)
 
@@ -176,8 +173,8 @@ def register_page():
             print("something wrong with password")
             return render_template("register.jinja")
 
-        query = f"INSERT INTO users (name, email_address, password) VALUES ('{username}', '{email_address}', '{password}')"
-        result = db.session.execute(text(query))
+        query = "INSERT INTO users (name, email_address, password) VALUES (:username, :email_address, :password)"
+        result = db.session.execute(text(query), params={"username": username, "email_address": email_address, "password": password})
         db.session.commit()
 
         return redirect(url_for("games_page"))

@@ -27,8 +27,8 @@ app.config["JWT_ACCESS_COOKIE_NAME"] = "access_token_cookie"
 
 # GET is not included by default but one can never be sure that a developer does not implement side
 # effects in a GET request which would make it relevant for csrf.
-app.config["JWT_CSRF_METHODS"] = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-app.config["JWT_COOKIE_CSRF_PROTECT"] = False
+app.config["JWT_CSRF_METHODS"] = ["POST", "PUT", "PATCH", "DELETE"]
+app.config["JWT_COOKIE_CSRF_PROTECT"] = True
 app.config["JWT_COOKIE_SAMESITE"] = "Strict"
 app.config["JWT_COOKIE_SECURE"] = False  # use this as soon as certificates are in place
 app.config["JWT_ACCESS_CSRF_COOKIE_NAME"] = "csrf_access_token"

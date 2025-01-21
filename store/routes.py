@@ -1,5 +1,8 @@
+from datetime import timedelta
 import os
 from typing import Any
+
+from flask_jwt_extended import create_access_token, get_jwt, set_access_cookies, jwt_required
 
 from store import app, db, queries, utils, THUMBNAIL_UPLOAD_DIRECTORY
 
@@ -9,8 +12,9 @@ from sqlalchemy import text
 
 
 @app.route("/")
+@jwt_required()
 def home_page():
-    cookie = request.cookies.get("name")
+    cookie = get_jwt()["sub"]
     print("<>home_page", cookie)
 
     query: str = "SELECT name FROM tags;"
@@ -20,6 +24,7 @@ def home_page():
 
 
 @app.route("/users")
+@jwt_required
 def users_page():
     query: str = "SELECT * FROM users"
     result_set: Any = db.session.execute(text(query))
@@ -28,8 +33,9 @@ def users_page():
 
 
 @app.route("/games")
+@jwt_required()
 def games_page():
-    cookie = request.cookies.get("name")
+    cookie = get_jwt()["sub"]
     print("<>games_page", cookie)
     if not cookie:
         return redirect(url_for("login_page"))
@@ -40,8 +46,9 @@ def games_page():
 
 
 @app.route("/library")
+@jwt_required()
 def library_page():
-    cookie = request.cookies.get("name")
+    cookie = get_jwt()["sub"]
     print("<>library_page", cookie)
     if not cookie:
         return redirect(url_for("login_page"))
@@ -52,8 +59,9 @@ def library_page():
 
 
 @app.route("/add_game", methods=["GET", "POST"])
+@jwt_required()
 def add_game_page():
-    cookie = request.cookies.get("name")
+    cookie = get_jwt()["sub"]
     print("<>library_page", cookie)
     if not cookie:
         return redirect(url_for("login_page"))
@@ -81,8 +89,9 @@ def add_game_page():
 
 
 @app.route("/game/<string:name>")
+@jwt_required()
 def game_page(name: str):
-    username = request.cookies.get("name")
+    username = get_jwt()["sub"]
     owned = False
     gameid = queries.fetch_gameid_by_gamename(name)
     game: dict = queries.fetch_game_by_name(name)
@@ -101,6 +110,7 @@ def game_page(name: str):
 
 
 @app.route("/buy_game", methods=["POST"])
+@jwt_required()
 def buy_game():
     body = request.json
     print(body)
@@ -138,9 +148,10 @@ def login_page():
             #flash(f"Try again", category='warning')
             return render_template('login.jinja', cookie=None)
 
+        access_token = create_access_token(identity=username)
         resp = redirect("/")
         print(user)
-        resp.set_cookie("name", user[0])
+        set_access_cookies(resp, access_token)
         return resp
 
     return render_template('login.jinja', cookie=None)
@@ -149,8 +160,9 @@ def login_page():
 @app.route('/logout')
 def logout():
     print(">>>>>>>logout_page")
-    resp = redirect("/")
-    resp.set_cookie("name", "", expires=0)
+    resp = redirect("/login")
+    access_token = create_access_token(identity="", expires_delta=timedelta(days=-2))
+    set_access_cookies(resp, access_token)
     return resp
 
 
@@ -177,6 +189,6 @@ def register_page():
         result = db.session.execute(text(query), params={"username": username, "email_address": email_address, "password": password})
         db.session.commit()
 
-        return redirect(url_for("games_page"))
+        return redirect(url_for("login_page"))
 
     return render_template("register.jinja")

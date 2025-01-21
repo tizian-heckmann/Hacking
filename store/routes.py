@@ -1,12 +1,12 @@
 from datetime import timedelta
+import datetime
 import os
 from typing import Any
 
-from flask_jwt_extended import create_access_token, get_jwt, set_access_cookies, jwt_required
-
-from store import app, db, queries, utils, THUMBNAIL_UPLOAD_DIRECTORY
+from store import app, db, queries, utils, forms, THUMBNAIL_UPLOAD_DIRECTORY
 
 from flask import flash, redirect, render_template, request, url_for
+from flask_jwt_extended import create_access_token, get_jwt, set_access_cookies, jwt_required
 from sqlalchemy import text
 
 
@@ -161,19 +161,22 @@ def login_page():
 def logout():
     print(">>>>>>>logout_page")
     resp = redirect("/login")
-    access_token = create_access_token(identity="", expires_delta=timedelta(days=-2))
-    set_access_cookies(resp, access_token)
+    resp.set_cookie("access_token_cookie", "", expires=datetime.datetime.now())
     return resp
 
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
-    print(">>>>>>register_page")
+    form = forms.RegistrationForm()
+
+    if form.validate_on_submit():
+        return render_template("register.jinja", form=form)
+
     if request.method == "POST":
-        username = request.form.get("username")
-        email_address = request.form.get("emailAddress")
-        password = request.form.get("password")
+        username = form.username.data
+        email_address = form.email.data
+        password = form.password.data
 
         if username is None or isinstance(username, str) is False:
             print("something wrong with username")

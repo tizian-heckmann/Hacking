@@ -8,6 +8,7 @@ function buyGame(button) {
         method: "post",
         headers: {
             "content-type": "application/json",
+            "X-CSRF-TOKEN": getCookie("csrf_access_token"),
         },
         body: JSON.stringify({ userId: userId, gameId: gameId }),
     });
